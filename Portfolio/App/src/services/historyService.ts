@@ -1,17 +1,17 @@
-import { createHashHistory as createHistory, History as HistoryDef } from 'history';
-import { RouterStore, syncHistoryWithStore, SynchronizedHistory } from 'mobx-react-router';
-import { injectable } from 'inversify';
+import { createHashHistory } from "history";
+import { injectable } from "inversify";
+import { RouterStore, syncHistoryWithStore, SynchronizedHistory } from "mobx-react-router";
 
 // We wrap the react-router history method with mobx-react-router to make it observable.
 // https://github.com/alisd23/mobx-react-router
 
 @injectable()
 export class HistoryService {
-	store: RouterStore;
-	history: SynchronizedHistory;
+	public store: RouterStore;
+	public history: SynchronizedHistory;
 
 	constructor() {
 		this.store = new RouterStore();
-		this.history = syncHistoryWithStore(createHistory(), this.store);
+		this.history = syncHistoryWithStore(createHashHistory(), this.store);
 	}
 }

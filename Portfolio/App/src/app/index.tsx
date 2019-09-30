@@ -1,17 +1,16 @@
 import * as React from "react";
-import { Switch } from 'react-router';
-import { observer } from 'mobx-react';
+import { observer } from "mobx-react";
+import { Switch } from "react-router";
 
-import './index.scss';
+import "./index.scss";
 
 @observer
 export class App extends React.Component<{}, {}> {
-	render() {
+	public render() {
 		return (
 			<>
 				<div>Hello</div>
-				<Switch>
-				</Switch>
+				<Switch />
 			</>
 		);
 	}

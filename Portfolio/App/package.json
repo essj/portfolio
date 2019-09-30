@@ -1,13 +1,17 @@
 {
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js"
+    "start": "tslint --project . && webpack-dev-server",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "tslint": "tslint --project ."
   },
   "dependencies": {
     "@babel/core": "^7.6.2",
+    "@material-ui/core": "^4.4.3",
+    "@material-ui/icons": "^4.4.3",
     "bind-decorator": "^1.0.11",
     "classnames": "^2.2.6",
     "clipboard-copy": "^3.1.0",
+    "history": "^4.10.1",
     "inversify": "^5.0.1",
     "inversify-inject-decorators": "^3.1.0",
     "mobx": "^5.0.3",
@@ -21,8 +25,8 @@
     "react-markdown": "^4.2.2",
     "react-router": "^5.1.1",
     "react-router-dom": "^5.1.1",
-    "reflect-metadata": "^0.1.12",
-    "uglifyjs-webpack-plugin": "^2.2.0"
+    "reflect-metadata": "^0.1.13",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
@@ -32,6 +36,7 @@
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-router": "^5.1.1",
     "@types/react-router-dom": "^5.1.0",
+    "@types/webfontloader": "^1.6.29",
     "@types/webpack-env": "^1.13.6",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
@@ -43,11 +48,14 @@
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.9.2",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
-    "react-hot-loader": "^4.3.3",
+    "react-hot-loader": "^4.12.14",
     "sass-loader": "7.1.0",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.2.0",
+    "tslint": "^5.20.0",
+    "tslint-react": "^4.1.0",
     "typescript": "^3.5.3",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",

@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 import { observer } from 'mobx-react';
-import { NonIdealState, Spinner } from "@blueprintjs/core";
-import bind from "bind-decorator";
+import { NonIdealState, Spinner } from '@blueprintjs/core';
+import bind from 'bind-decorator';
 
 import {
 	lazyInject,
@@ -112,9 +112,9 @@ export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T,
 
 	render() {		
 		if (this.state.isLoading) {
-			return <div className="center-fill">
+			return <div className='center-fill'>
 				<NonIdealState
-					title={this.props.loadingMessage || "Loading..."}
+					title={this.props.loadingMessage || 'Loading...'}
 					icon={<Spinner />}
 				/>
 			</div>;
@@ -122,15 +122,15 @@ export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T,
 
 		if (!this.state.thing) {
 			if (this.props.errorLoadingVisual) {
-				return <div className="center-fill">
+				return <div className='center-fill'>
 					{this.props.errorLoadingVisual}
 				</div>;
 			}
 
-			return <div className="center-fill">
+			return <div className='center-fill'>
 				<NonIdealState
-					title={this.props.errorLoadingMessage || "There was an issue loading this page."}
-					icon="issue"
+					title={this.props.errorLoadingMessage || 'There was an issue loading this page.'}
+					icon='issue'
 					description={this.props.errorLoadingDescription}
 				/>
 			</div>;

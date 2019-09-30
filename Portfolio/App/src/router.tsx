@@ -1,19 +1,33 @@
 import * as React from "react";
-import { hot } from 'react-hot-loader';
-import { Router as ReactRouter, Route, Switch, Redirect } from 'react-router';
+import WebFont from "webfontloader";
+import { App } from "./app";
+import { Container, HistoryService, Services } from "./services";
+import { hot } from "react-hot-loader";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import { Redirect, Route, Router as ReactRouter, Switch } from "react-router";
 
-import './services/inversify';
-import './reactions';
+import "./reactions";
+import "./services/inversify";
 
-import { Container, HistoryService, Services } from './services';
+WebFont.load({
+	google: {
+		families: ["Roboto", "sans-serif"],
+	},
+});
 
-import { App } from './app';
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: "#f1c40f",
+		},
+	},
+});
 
 const history = Container.get<HistoryService>(Services.History);
 
 class Router extends React.Component<{}, {}> {
-	render() {
-		return (
+	public render() {
+		return <MuiThemeProvider theme={theme}>
 			<ReactRouter history={history.history}>
 				<Switch>
 					<Route path="/" component={App} />
@@ -21,7 +35,7 @@ class Router extends React.Component<{}, {}> {
 				</Switch>
 
 			</ReactRouter>
-		);
+		</MuiThemeProvider>;
 	}
 }
 
