@@ -1,25 +1,30 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
-  },
-  "include": [
-    "src"
-  ]
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es6",
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "sourceMap": true,
+        "jsx": "react",
+
+        "lib": [
+            "dom", 
+            "es6"
+        ],
+        "types": ["reflect-metadata", "webpack-env"],
+
+        "allowSyntheticDefaultImports": true,
+
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true
+    },
+    "files": [
+        "src/index.tsx"
+    ]
 }
