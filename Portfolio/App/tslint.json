@@ -2,17 +2,21 @@
 	"extends": ["tslint:latest", "tslint-react"],
 	"rules": {
 		"indent": [true, "tabs"],
+		"jsx-boolean-value": [false],
 		"jsx-no-lambda": false,
 		"jsx-wrap-multiline": false,
 		"no-consecutive-blank-lines": true,
 		"no-for-in-array": true,
 		"no-implicit-dependencies": [true, "dev", "optional"],
+		"no-submodule-imports": false,
 		"no-var-keyword": true,
+		"object-literal-sort-keys": false,
 		"one-line": [true, "check-catch", "check-finally", "check-else", "check-open-brace"],
 		"ordered-imports": [true, {
 			"import-sources-order": "any",
 			"named-imports-order": "case-insensitive"
-			}],
+		}],
+		"quotemark": [true, "single", "jsx-double"],
 		"semicolon": [true, "always"]
 	}
 }

@@ -1,6 +1,6 @@
 export class ClientWithAuth {
 	public transformOptions(options: RequestInit): Promise<RequestInit> {
-		options.credentials = "include";
+		options.credentials = 'include';
 
 		return new Promise<RequestInit>((resolve) => resolve(options));
 	}

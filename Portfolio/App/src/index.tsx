@@ -1,10 +1,12 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import Router from "./router";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import Router from './router';
 
-import "./variables.scss";
+import './index.scss';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
 	<Router />,
-	document.getElementById("app") as HTMLElement,
+	document.getElementById('app') as HTMLElement,
 );

@@ -48,6 +48,7 @@ const config = {
 					},
 				],
 			},
+			{ test: /\.jpg$/, loader: 'file-loader?name=[hash].[ext]' },
 			{ test: /\.png$/, loader: 'file-loader?name=[hash].[ext]' },
 			{ test: /\.svg$/, loader: 'file-loader?name=[hash].[ext]' },
 			{ test: /\.eot$/, loader: 'file-loader?name=[hash].[ext]' },
