@@ -1,7 +1,27 @@
+@import '../variables.scss';
+
 .home {
-	height: 100%;
-	
+	height: calc(100vh - 72px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background: $eggshell;
+
 	img {
-		width: 100%;
+		width: 50vh;
+		border: 2vh solid $yellow;
+	}
+
+	.content {
+		padding: 24px;
+	}
+
+	/* Mobile devices. */
+	@media not screen and (min-height: 600px) {
+		img {
+			display: none;
+		}
 	}
 }

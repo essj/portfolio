@@ -1,10 +1,14 @@
 @import '../variables.scss';
 
 .navbar {
-	background: none;
+	background: white;
 	padding: 1rem 2rem !important;
 
 	.navbar-brand, .navbar-nav  {
 		font-family: 'Volkhov';
+	}
+
+	.navbar-nav .nav-link {
+		padding-right: 1.5rem !important;
 	}
 }
