@@ -5,7 +5,6 @@ import { Route, Switch } from 'react-router';
 import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import './index.scss';
 
@@ -17,13 +16,14 @@ export class App extends React.Component<{}, {}> {
 		return (
 			<>
 				<Navbar expand="lg">
-					<Navbar.Brand href="#home">Jess' Portfolio</Navbar.Brand>
+					<Navbar.Brand href="/">Jess' Portfolio</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
 						<Nav className="mr-auto" />
 						<Nav>
-							<Nav.Link href="">About</Nav.Link>
+							<Nav.Link href="/">About</Nav.Link>
 							<Nav.Link href="">Projects</Nav.Link>
+							<Nav.Link href="">Art</Nav.Link>
 							<Button variant="outline-primary">Contact</Button>
 						</Nav>
 					</Navbar.Collapse>
