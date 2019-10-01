@@ -10,7 +10,7 @@ import './services/inversify';
 
 WebFont.load({
 	google: {
-		families: ['Roboto', 'sans-serif'],
+		families: ['Source Sans Pro', 'Volkhov', 'sans-serif'],
 	},
 });
 

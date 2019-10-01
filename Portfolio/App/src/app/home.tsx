@@ -6,7 +6,7 @@ export class Home extends React.PureComponent {
 	public render() {
 		const panda = require('../resources/images/panda.jpg');
 
-		return <div>
+		return <div className="home">
 			<img src={panda} />
 		</div>;
 	}

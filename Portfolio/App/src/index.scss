@@ -1,10 +1,57 @@
+/* First import our overrides for Bootstrap CSS styles. */
+@import './variables.scss';
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
 body {
-	margin: 0;
+	font-family: 'Source Sans Pro';
 }
 
-$background: #e4eaea;
-$eggshell: #f2e8da;
-$yellow: #f0d787;
-$green: #abc353;
-$teal: #19a799;
-$forest: #4c7c3e;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+a {
+	color: #1D809F;
+}
+
+a:hover, a:focus, a:active {
+	color: #155d74;
+}
+
+.btn {
+	border-radius: 32px !important;
+}
+
+.btn-primary {
+	background-color: $forest !important;
+	border-color: $forest !important;
+}
+
+.btn-primary {
+	color: #fff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+	background-color: darken($forest, 10%) !important;
+	border-color: darken($forest, 10%) !important;
+}
+
+.btn-secondary {
+	background-color: $yellow !important;
+	border-color: $yellow !important;
+	color: #fff !important;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
+	background-color: darken($yellow, 0.5) !important;
+	border-color: darken($yellow, 0.5) !important;
+}
+
+.btn-dark {
+	color: #fff !important;
+}
