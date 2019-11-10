@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { NonIdealState, Spinner } from '@blueprintjs/core';
 import bind from 'bind-decorator';
 
 import {
 	lazyInject,
-	ErrorResponseHandler,
-	Services
+	Services,
 } from '../services';
 
 interface WithIdPropsBase<T, O> {
@@ -20,7 +18,7 @@ interface WithoutIdPropsBase<T> {
 }
 
 interface RenderProps<T> {
-	render: (thing: T, reload: Function) => JSX.Element;
+	render: (thing: T, reload: () => void) => JSX.Element;
 	loadingMessage?: string | null;
 	errorLoadingMessage?: string | React.ReactElement<any>;
 	errorLoadingDescription?: string | React.ReactElement<any>;
@@ -47,17 +45,16 @@ function isIdLoader<T, O>(item: ThingLoaderProps<T, O>): item is WithIdProps<T, 
  * Objects with object properties will always be not equal.
  */
 function shallowCompareIsEqual(obj1: any, obj2: any) {
-	if (obj1 === obj2)
+	if (obj1 === obj2) {
 		return true;
+	}
 
 	return Object.keys(obj1).length === Object.keys(obj2).length &&
-		Object.keys(obj1).every(key => obj2.hasOwnProperty(key) && obj1[key] === obj2[key]);
+		Object.keys(obj1).every((key) => obj2.hasOwnProperty(key) && obj1[key] === obj2[key]);
 }
 
 @observer
 export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T, O>, State<T, O>> {
-	@lazyInject(Services.ErrorResponseHandler) private _errorHandler: ErrorResponseHandler;
-
 	constructor(props: any) {
 		super(props);
 
@@ -67,29 +64,30 @@ export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T,
 		};
 	}
 
-	async componentDidMount() {
+	public async componentDidMount() {
 		await this.loadThing(this.state.thingId);
 	}
 
-	async componentWillReceiveProps(nextProps: ThingLoaderProps<T, O>) {
+	public async componentWillReceiveProps(nextProps: ThingLoaderProps<T, O>) {
 		if (!shallowCompareIsEqual(nextProps.id, this.state.thingId)) {
 			this.setState({
 				isLoading: true,
 				thingId: nextProps.id,
 				thing: null,
 			});
-			
+
 			await this.loadThing(nextProps.id);
 		}
 	}
 
-	async loadThing(thingId?: O | null) {
+	private async loadThing(thingId?: O | null) {
 		let thing: T | null = null;
 		try {
-			if (isIdLoader(this.props) && thingId)
+			if (isIdLoader(this.props) && thingId) {
 				thing = await this.props.load(thingId);
-			else
+			} else {
 				thing = await (this.props as WithoutIdProps<T>).load();
+			}
 		} catch(err) {
 			this._errorHandler.handleWithToast(err);
 		}
