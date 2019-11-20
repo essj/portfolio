@@ -1,14 +1,18 @@
 @import '../variables.scss';
 
 .navbar {
-	background: white;
-	padding: 1rem 2rem !important;
-
-	.navbar-brand, .navbar-nav  {
-		font-family: 'Volkhov';
+	.MuiToolbar-root {
+		width: 100%;
 	}
 
-	.navbar-nav .nav-link {
-		padding-right: 1.5rem !important;
+	.MuiTypography-h6 {
+		font-family: 'Volkhov';
+		flex-grow: 1;
+	}
+
+	.MuiButtonBase-root {
+		font-family: 'Volkhov';
+		text-transform: none;
 	}
 }
+
