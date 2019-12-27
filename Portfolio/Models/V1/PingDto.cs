@@ -2,14 +2,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Portfolio.Data.Models
+namespace Portfolio.Models.V1
 {
-	public class Ping
+	/// <summary>
+	/// <see cref="Data.Models.Ping"/>
+	/// </summary>
+	public class PingDto
 	{
 		/// <summary>
 		/// Unique ID for this event.
 		/// </summary>
-		[Key]
 		public Guid PingId { get; set; }
 
 		[Required]
