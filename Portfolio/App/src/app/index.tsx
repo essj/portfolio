@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 import './index.scss';
 
-import { Home } from './home';
+import Home from './home';
 
 const theme = createMuiTheme({
 	palette: {
@@ -25,8 +25,7 @@ const theme = createMuiTheme({
 });
 
 @observer
-export class App extends React.Component<{}, {}> {
-	
+class App extends React.PureComponent {
 	public render() {
 		return (
 			<ThemeProvider theme={theme}>
@@ -48,3 +47,5 @@ export class App extends React.Component<{}, {}> {
 		);
 	}
 }
+
+export default App;

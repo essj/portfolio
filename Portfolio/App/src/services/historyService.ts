@@ -6,7 +6,7 @@ import { RouterStore, syncHistoryWithStore, SynchronizedHistory } from 'mobx-rea
 // https://github.com/alisd23/mobx-react-router
 
 @injectable()
-export class HistoryService {
+class HistoryService {
 	public store: RouterStore;
 	public history: SynchronizedHistory;
 
@@ -15,3 +15,5 @@ export class HistoryService {
 		this.history = syncHistoryWithStore(createHashHistory(), this.store);
 	}
 }
+
+export default HistoryService;

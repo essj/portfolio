@@ -1,9 +1,10 @@
-/* First import our overrides for Bootstrap CSS styles. */
+/* First import our styles to override everything else. */
 @import './variables.scss';
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
+/* Import other style sheets. */
 
 body {
 	font-family: 'Lato';
+	margin: 0;
 }
 
 h1,

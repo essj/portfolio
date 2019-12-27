@@ -1,12 +1,22 @@
 import * as React from 'react';
 import WebFont from 'webfontloader';
-import { App } from './app';
-import { Container, HistoryService, Services } from './services';
 import { hot } from 'react-hot-loader';
-import { Redirect, Route, Router as ReactRouter, Switch } from 'react-router';
+import {
+	Redirect,
+	Route,
+	Router as ReactRouter,
+	Switch,
+} from 'react-router';
 
-import './reactions';
 import './services/inversify';
+import './reactions';
+
+import App from './app';
+import {
+	Container,
+} from './services';
+import HistoryService from './services/historyService';
+import Service from './services/service';
 
 WebFont.load({
 	google: {
@@ -14,16 +24,18 @@ WebFont.load({
 	},
 });
 
-const history = Container.get<HistoryService>(Services.History);
+const history = Container.get<HistoryService>(Service.History);
 
-class Router extends React.Component<{}, {}> {
+class Router extends React.PureComponent {
 	public render() {
-		return <ReactRouter history={history.history}>
-			<Switch>
-				<Route path="/" component={App} />
-				<Route component={() => <Redirect to="/" />} />
-			</Switch>
-		</ReactRouter>;
+		return (
+			<ReactRouter history={history.history}>
+				<Switch>
+					<Route path="/" component={App} />
+					<Route component={() => <Redirect to="/" />} />
+				</Switch>
+			</ReactRouter>
+		);
 	}
 }
 

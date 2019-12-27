@@ -2,11 +2,6 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import bind from 'bind-decorator';
 
-import {
-	lazyInject,
-	Services,
-} from '../services';
-
 interface WithIdPropsBase<T, O> {
 	id: O;
 	load: (id: O) => Promise<T | null>;
@@ -37,7 +32,7 @@ interface State<T, O> {
 }
 
 function isIdLoader<T, O>(item: ThingLoaderProps<T, O>): item is WithIdProps<T, O> {
-	return (item as WithIdPropsBase<T, O>).id != undefined;
+	return (item as WithIdPropsBase<T, O>).id !== undefined;
 }
 
 /**
@@ -49,12 +44,12 @@ function shallowCompareIsEqual(obj1: any, obj2: any) {
 		return true;
 	}
 
-	return Object.keys(obj1).length === Object.keys(obj2).length &&
-		Object.keys(obj1).every((key) => obj2.hasOwnProperty(key) && obj1[key] === obj2[key]);
+	return Object.keys(obj1).length === Object.keys(obj2).length
+		&& Object.keys(obj1).every((key) => obj2.hasOwnProperty(key) && obj1[key] === obj2[key]);
 }
 
 @observer
-export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T, O>, State<T, O>> {
+class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T, O>, State<T, O>> {
 	constructor(props: any) {
 		super(props);
 
@@ -88,13 +83,13 @@ export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T,
 			} else {
 				thing = await (this.props as WithoutIdProps<T>).load();
 			}
-		} catch(err) {
-			this._errorHandler.handleWithToast(err);
+		} catch (err) {
+			// TODO.
 		}
 
 		this.setState({
 			isLoading: false,
-			thing: thing,
+			thing,
 		});
 	}
 
@@ -108,32 +103,40 @@ export class ThingLoader<T, O = any> extends React.Component<ThingLoaderProps<T,
 		await this.loadThing(this.state.thingId);
 	}
 
-	render() {		
+	render() {
 		if (this.state.isLoading) {
-			return <div className='center-fill'>
-				<NonIdealState
-					title={this.props.loadingMessage || 'Loading...'}
-					icon={<Spinner />}
-				/>
-			</div>;
+			return (
+				<div className="center-fill">
+					{/* <NonIdealState
+						title={this.props.loadingMessage || 'Loading...'}
+						icon={<Spinner />}
+					/> */}
+				</div>
+			);
 		}
 
 		if (!this.state.thing) {
 			if (this.props.errorLoadingVisual) {
-				return <div className='center-fill'>
-					{this.props.errorLoadingVisual}
-				</div>;
+				return (
+					<div className="center-fill">
+						{this.props.errorLoadingVisual}
+					</div>
+				);
 			}
 
-			return <div className='center-fill'>
-				<NonIdealState
-					title={this.props.errorLoadingMessage || 'There was an issue loading this page.'}
-					icon='issue'
-					description={this.props.errorLoadingDescription}
-				/>
-			</div>;
+			return (
+				<div className="center-fill">
+					{/* <NonIdealState
+						title={this.props.errorLoadingMessage || 'There was an issue loading this page.'}
+						icon='issue'
+						description={this.props.errorLoadingDescription}
+					/> */}
+				</div>
+			);
 		}
 
 		return this.props.render(this.state.thing, this.reload);
 	}
 }
+
+export default ThingLoader;
