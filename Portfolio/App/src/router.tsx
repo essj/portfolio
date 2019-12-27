@@ -14,9 +14,9 @@ import './reactions';
 import App from './app';
 import {
 	Container,
+	HistoryService,
+	Service,
 } from './services';
-import HistoryService from './services/historyService';
-import Service from './services/service';
 
 WebFont.load({
 	google: {
