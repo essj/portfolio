@@ -10,7 +10,7 @@ using Portfolio.Data;
 namespace Portfolio.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20191227034032_AddIpAndSourceToPings")]
+    [Migration("20191227074721_AddIpAndSourceToPings")]
     partial class AddIpAndSourceToPings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace Portfolio.Data.Migrations
 
                     b.Property<string>("IpAddress");
 
-                    b.Property<int>("Source");
+                    b.Property<int?>("Source");
 
                     b.Property<DateTimeOffset>("Timestamp");
 

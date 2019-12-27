@@ -26,7 +26,7 @@ namespace Portfolio.Data.Migrations
 
                     b.Property<string>("IpAddress");
 
-                    b.Property<int>("Source");
+                    b.Property<int?>("Source");
 
                     b.Property<DateTimeOffset>("Timestamp");
 

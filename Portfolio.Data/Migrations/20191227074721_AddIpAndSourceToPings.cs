@@ -23,8 +23,7 @@ namespace Portfolio.Data.Migrations
             migrationBuilder.AddColumn<int>(
                 name: "Source",
                 table: "Pings",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
