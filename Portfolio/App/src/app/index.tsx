@@ -13,10 +13,24 @@ import './index.scss';
 
 import Home from './home';
 import Ping from './ping';
+import {
+	Reports,
+} from './../views';
 
 const theme = createMuiTheme({
 	palette: {
 		primary: amber,
+	},
+	typography: {
+		h1: {
+			fontFamily: "Volkhov"
+		},
+		h2: {
+			fontFamily: "Volkhov"
+		},
+		h3: {
+			fontFamily: "Volkhov"
+		},
 	},
 	props: {
 		MuiButtonBase: {
@@ -44,6 +58,7 @@ class App extends React.PureComponent {
 				<Switch key="content">
 					<Route exact path="/" component={Home} />
 					<Route exact path="/ping" component={Ping} />
+					<Route exact path="/reports" component={Reports} />
 				</Switch>
 			</ThemeProvider>
 		);

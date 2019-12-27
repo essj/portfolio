@@ -16,7 +16,7 @@ export class ClientWithAuth {
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 
 export class Client extends ClientWithAuth {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
