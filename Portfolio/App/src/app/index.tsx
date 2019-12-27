@@ -29,7 +29,7 @@ class App extends React.PureComponent {
 	public render() {
 		return (
 			<ThemeProvider theme={theme}>
-				<AppBar position="static" className="navbar">
+				{/* <AppBar position="static" className="navbar">
 					<Toolbar>
 						<Typography variant="h6">
 							Jess' Portfolio
@@ -39,7 +39,7 @@ class App extends React.PureComponent {
 						<Button>Art</Button>
 						<Button>Contact</Button>
 					</Toolbar>
-				</AppBar>
+				</AppBar> */}
 				<Switch key="content">
 					<Route exact path="/" component={Home} />
 				</Switch>
