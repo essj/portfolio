@@ -59,14 +59,14 @@ class Reports extends React.Component<{}, State> {
 	@bind
 	private async load() {
 		return (await this._pingService.list())
-			.sort((a, b) => a.timestamp.diff(b.timestamp));
+			.sort((a, b) => a.timestamp.unix() >= b.timestamp.unix() ? -1 : 1);
 	}
 
 	/**
 	 * See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 	 */
 	private getTimeInTimeZone(time: moment.Moment) {
-		const format = "L LTS ZZ";
+		const format = "DD/MM/YYYY HH:mm:ss ZZ";
 		if (this.state.isNewZealandTimeZoneChecked) {
 			return time.tz("Pacific/Auckland").format(format);
 		}
@@ -106,8 +106,8 @@ class Reports extends React.Component<{}, State> {
 							<TableHead>
 								<TableRow>
 									<TableCell>{`Time (${this.state.isNewZealandTimeZoneChecked ? "NZT" : "NST"})`}</TableCell>
-									<TableCell align="right">User Name</TableCell>
-									<TableCell align="right">IP Address</TableCell>
+									<TableCell>User Name</TableCell>
+									<TableCell>IP Address</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
