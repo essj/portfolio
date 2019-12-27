@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import './index.scss';
 
 import Home from './home';
+import Ping from './ping';
 
 const theme = createMuiTheme({
 	palette: {
@@ -42,6 +43,7 @@ class App extends React.PureComponent {
 				</AppBar> */}
 				<Switch key="content">
 					<Route exact path="/" component={Home} />
+					<Route exact path="/ping" component={Ping} />
 				</Switch>
 			</ThemeProvider>
 		);

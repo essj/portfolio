@@ -30,16 +30,63 @@ export class Client extends ClientWithAuth {
     }
 
     /**
-     * @param userName (optional) 
-     * @param type (optional) 
      * @return Success
      */
-    ping(userName?: string | null | undefined, type?: string | null | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/v1/ping?";
+    list(): Promise<PingDto[]> {
+        let url_ = this.baseUrl + "/api/pings/v1";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processList(_response);
+        });
+    }
+
+    protected processList(response: Response): Promise<PingDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PingDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            return throwException("Bad Request", status, _responseText, _headers);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PingDto[]>(<any>null);
+    }
+
+    /**
+     * @param userName (optional) 
+     * @param source (optional) 
+     * @return Success
+     */
+    ping(userName?: string | null | undefined, source?: string | null | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/pings/v1/ping?";
         if (userName !== undefined)
             url_ += "userName=" + encodeURIComponent("" + userName) + "&"; 
-        if (type !== undefined)
-            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
+        if (source !== undefined)
+            url_ += "source=" + encodeURIComponent("" + source) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
@@ -121,6 +168,58 @@ export class Client extends ClientWithAuth {
     }
 }
 
+export class PingDto implements IPingDto {
+    pingId!: string;
+    ipAddress!: string;
+    userName!: string | null;
+    timestamp!: moment.Moment;
+    source!: PingDtoSource | null;
+
+    constructor(data?: IPingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pingId = _data["pingId"] !== undefined ? _data["pingId"] : <any>null;
+            this.ipAddress = _data["ipAddress"] !== undefined ? _data["ipAddress"] : <any>null;
+            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.timestamp = _data["timestamp"] ? moment(_data["timestamp"].toString()) : <any>null;
+            this.source = _data["source"] !== undefined ? _data["source"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): PingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pingId"] = this.pingId !== undefined ? this.pingId : <any>null;
+        data["ipAddress"] = this.ipAddress !== undefined ? this.ipAddress : <any>null;
+        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["timestamp"] = this.timestamp ? this.timestamp.toISOString() : <any>null;
+        data["source"] = this.source !== undefined ? this.source : <any>null;
+        return data; 
+    }
+}
+
+export interface IPingDto {
+    pingId: string;
+    ipAddress: string;
+    userName: string | null;
+    timestamp: moment.Moment;
+    source: PingDtoSource | null;
+}
+
 export class WeatherForecast implements IWeatherForecast {
     dateFormatted!: string | null;
     temperatureC!: number | null;
@@ -167,6 +266,11 @@ export interface IWeatherForecast {
     temperatureC: number | null;
     summary: string | null;
     temperatureF: number | null;
+}
+
+export enum PingDtoSource {
+    _0 = 0,
+    _1 = 1,
 }
 
 export class SwaggerException extends Error {

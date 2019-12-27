@@ -8,7 +8,11 @@ import {
 class PingService {
 	@inject(Service.Client) private client: C.Client;
 
-	ping(userName: string | null, type: string | null): Promise<void> {
+	public list(): Promise<C.IPingDto[]> {
+		return this.client.list();
+	}
+
+	public ping(userName: string | null, type: string | null): Promise<void> {
 		return this.client.ping(userName, type);
 	}
 }

@@ -12,6 +12,7 @@ namespace Portfolio.Models.V1
 		/// <summary>
 		/// Unique ID for this event.
 		/// </summary>
+		[Required]
 		public Guid PingId { get; set; }
 
 		[Required]
