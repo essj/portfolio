@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Data;
 using Portfolio.Data.Services;
+using Portfolio.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace Portfolio
 {
@@ -34,7 +36,10 @@ namespace Portfolio
 		/// </summary>
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddMvc()
+				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+			services.AddCors();
 
 			// In production, the React files will be served from this directory.
 			services.AddSpaStaticFiles(configuration =>
@@ -46,6 +51,13 @@ namespace Portfolio
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddSingleton<IDbContextFactory, DbContextFactory>();
+
+			services.AddSwaggerGen(c =>
+			{
+				c.MapType<TimeSpan>(() => new Schema { Type = "string", Format = "time-span" });
+				c.MapType<TimeSpan?>(() => new Schema { Type = "string", Format = "time-span" });
+				c.SwaggerDoc("v1", new Info { Title = "Portfolio API", Version = "v1" });
+			});
 		}
 
 		/// <summary>
@@ -63,6 +75,19 @@ namespace Portfolio
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			var corsOptions = Configuration.GetSection("Cors").Get<CorsOptions>();
+			app.UseCors(builder =>
+			{
+				builder
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials()
+					.WithOrigins(corsOptions.AllowOrigin.Split(','));
+			});
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Portfolio API"); });
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();

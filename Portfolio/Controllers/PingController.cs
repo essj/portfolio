@@ -4,13 +4,15 @@ using Portfolio.Data;
 using Portfolio.Data.Enums;
 using Portfolio.Data.Models;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Portfolio.Controllers
 {
-	[Route("api/ping")]
-	class PingController : Controller
+	/// <summary>
+	/// Actions relating to <see cref="Data.Models.Ping"/>.
+	/// </summary>
+	[Route("api/v1/ping")]
+	public class PingController : Controller
 	{
 		private readonly Context _context;
 
@@ -22,48 +24,47 @@ namespace Portfolio.Controllers
 			_context = context;
 		}
 
-		public string Index()
-		{
-			return "This is my default action...";
-		}
-
-		[HttpGet("v1/", Name = "PingV1")]
-		[ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+		/// <summary>
+		/// Send a ping.
+		/// </summary>
+		[HttpGet("")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> Ping([FromRoute] string filename)
+		public async Task<IActionResult> Ping([FromQuery] string userName = null, [FromQuery] string source = null)
 		{
-			if (string.IsNullOrEmpty(filename))
-				filename = "image.jpg";
+			var ipAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
-			var path = Path.Combine("~", "Images", filename);
-
-			return File(path, "image/jpeg");
-		}
-
-		[HttpGet("v1/{filename}", Name = "PingV1Send")]
-		[ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> Send([FromRoute] string filename, [FromQuery] string username, [FromQuery] string description)
-		{
-			if (!string.IsNullOrEmpty(username))
+			_context.Add(new Ping
 			{
-				_context.Add(new Ping
-				{
-					UserName = username.ToLower(),
-					Timestamp = DateTimeOffset.UtcNow,
-					Type = PingType.Neopets,
-					Description = description,
-				});
+				IpAddress = ipAddress,
+				UserName = string.IsNullOrEmpty(userName) ? null : userName.ToLower(),
+				Timestamp = DateTimeOffset.UtcNow,
+				Source = GetPingSource(source),
+			});
 
-				await _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
+
+			return Ok();
+		}
+
+		private static PingSource? GetPingSource(string source)
+		{
+			if (string.IsNullOrWhiteSpace(source))
+			{
+				return null;
 			}
 
-			if (string.IsNullOrEmpty(filename))
-				filename = "image.jpg";
+			source = source.ToLower();
 
-			var path = Path.Combine("~", "Images", filename);
-
-			return File(path, "image/jpeg");
+			switch (source)
+			{
+				case "portfolio":
+					return PingSource.Portfolio;
+				case "userlookup":
+					return PingSource.UserLookup;
+				default:
+					return null;
+			}
 		}
 	}
 }

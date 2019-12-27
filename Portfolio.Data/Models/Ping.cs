@@ -12,10 +12,11 @@ namespace Portfolio.Data.Models
 		[Key]
 		public Guid PingId { get; set; }
 
+		public string IpAddress { get; set; }
+
 		/// <summary>
-		/// The username of the user that did this ping.
+		/// The username of the user that did this ping, if any.
 		/// </summary>
-		[Required]
 		public string UserName { get; set; }
 
 		/// <summary>
@@ -25,10 +26,6 @@ namespace Portfolio.Data.Models
 		public DateTimeOffset Timestamp { get; set; }
 
 		[Required]
-		public PingType Type { get; set; }
-
-		public string IpAddress { get; set; }
-
-		public string Description { get; set; }
+		public PingSource? Source { get; set; }
 	}
 }
