@@ -122,6 +122,48 @@ export class Client extends ClientWithAuth {
     }
 
     /**
+     * @return Success
+     */
+    upload(fileName: string): Promise<void> {
+        let url_ = this.baseUrl + "/api/pings/v1/upload/{fileName}";
+        if (fileName === undefined || fileName === null)
+            throw new Error("The parameter 'fileName' must be defined.");
+        url_ = url_.replace("{fileName}", encodeURIComponent("" + fileName)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpload(_response);
+        });
+    }
+
+    protected processUpload(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            return throwException("Bad Request", status, _responseText, _headers);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    /**
      * @param startDateIndex (optional) 
      * @return Success
      */

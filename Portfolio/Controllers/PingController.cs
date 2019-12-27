@@ -9,6 +9,7 @@ using Portfolio.Data.Enums;
 using Portfolio.Data.Models;
 using Portfolio.Models.V1;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Portfolio.Controllers
@@ -93,6 +94,40 @@ namespace Portfolio.Controllers
 				default:
 					return null;
 			}
+		}
+
+		[HttpGet("v1/upload/{fileName}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<IActionResult> Upload([FromRoute] string fileName)
+		{
+			using (var reader = new StreamReader(fileName))
+			{
+				// Skip header. Id,Username,Timestamp,Tag,Ip
+				reader.ReadLine();
+
+				while (!reader.EndOfStream)
+				{
+					var line = reader.ReadLine()?.Split(',');
+
+					if (line == null)
+					{
+						break;
+					}
+
+					_context.Add(new Ping
+					{
+						UserName = string.IsNullOrEmpty(line[1]) ? null : line[1].ToLower(),
+						Timestamp = DateTimeOffset.Parse(line[2]),
+						Source = GetPingSource(line[3]),
+						IpAddress = line[4],
+					});
+				}
+			}
+
+			await _context.SaveChangesAsync();
+
+			return Ok();
 		}
 	}
 }
