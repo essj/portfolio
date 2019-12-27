@@ -25,7 +25,6 @@ namespace Portfolio.Data.Models
 		[Required]
 		public DateTimeOffset Timestamp { get; set; }
 
-		[Required]
 		public PingSource? Source { get; set; }
 	}
 }
