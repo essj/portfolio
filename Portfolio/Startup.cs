@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using Portfolio.Data.Services;
 using Portfolio.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Reflection;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 namespace Portfolio
 {
@@ -38,6 +41,8 @@ namespace Portfolio
 		{
 			services.AddMvc()
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+			services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)));
 
 			services.AddCors();
 
@@ -75,6 +80,9 @@ namespace Portfolio
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			var automapperConfiguration = app.ApplicationServices.GetRequiredService<IConfigurationProvider>();
+			automapperConfiguration.AssertConfigurationIsValid();
 
 			var corsOptions = Configuration.GetSection("Cors").Get<CorsOptions>();
 			app.UseCors(builder =>
