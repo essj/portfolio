@@ -39,6 +39,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 interface State {
 	isNewZealandTimeZoneChecked: boolean;
+	tableRowsPerPage: number;
+	tablePage: number;
 }
 
 class Reports extends React.Component<{}, State> {
@@ -49,12 +51,15 @@ class Reports extends React.Component<{}, State> {
 
 		this.state = {
 			isNewZealandTimeZoneChecked: false,
+			tableRowsPerPage: 10,
+			tablePage: 0,
 		}
 	}
 
 	@bind
 	private async load() {
-		return await this._pingService.list();
+		return (await this._pingService.list())
+			.sort((a, b) => a.timestamp.diff(b.timestamp));
 	}
 
 	/**
@@ -69,12 +74,35 @@ class Reports extends React.Component<{}, State> {
 		return time.tz("America/Los_Angeles").format(format);
 	}
 
+	@bind
+	private handleChangePage(_: unknown, newPage: number) {
+		this.setState({
+			tablePage: newPage,
+		});
+	};
+
+	@bind
+	private handleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
+		this.setState({
+			tableRowsPerPage: parseInt(event.target.value, 10),
+			tablePage: 0,
+		});
+	};
+
 	private renderPings(pings: IPingDto[]) {
+		const {
+			tableRowsPerPage,
+			tablePage,
+			..._
+		} = this.state;
+
+		const emptyRows = tableRowsPerPage - Math.min(tableRowsPerPage, pings.length - tablePage * tableRowsPerPage);
+
 		return (
 			<ReportCard elevation={0}>
 				<CardContent>
 					<TableContainer>
-						<Table>
+						<Table size="small">
 							<TableHead>
 								<TableRow>
 									<TableCell>{`Time (${this.state.isNewZealandTimeZoneChecked ? "NZT" : "NST"})`}</TableCell>
@@ -83,16 +111,27 @@ class Reports extends React.Component<{}, State> {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{pings.map(x => (
-									<TableRow key={x.pingId}>
-										<TableCell>{this.getTimeInTimeZone(moment(x.timestamp))}</TableCell>
-										<TableCell>{x.userName}</TableCell>
-										<TableCell>{x.ipAddress}</TableCell>
-									</TableRow>
+								{pings
+									.slice(tablePage * tableRowsPerPage, tablePage * tableRowsPerPage + tableRowsPerPage)
+									.map(x => (
+										<TableRow key={x.pingId}>
+											<TableCell>{this.getTimeInTimeZone(moment(x.timestamp))}</TableCell>
+											<TableCell>{x.userName}</TableCell>
+											<TableCell>{x.ipAddress}</TableCell>
+										</TableRow>
 								))}
 							</TableBody>
 						</Table>
 					</TableContainer>
+					<TablePagination
+						rowsPerPageOptions={[5, 10, 25]}
+						component="div"
+						count={pings.length}
+						rowsPerPage={tableRowsPerPage}
+						page={tablePage}
+						onChangePage={this.handleChangePage}
+						onChangeRowsPerPage={this.handleChangeRowsPerPage}
+					/>
 				</CardContent>
 			</ReportCard>
 		);
