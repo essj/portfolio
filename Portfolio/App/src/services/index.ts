@@ -2,9 +2,11 @@
 
 export * from './client';
 export * from './inversify'; // This must be imported before the services that use it are imported.
-export * from './services';
+export { default as Service } from './service';
 
-export * from './historyService';
+// Re-export existing services.
+export { default as HistoryService } from './historyService';
+export { default as PingService } from './pingService';
 
 if (module && module.hot) {
 	module.hot.decline();
